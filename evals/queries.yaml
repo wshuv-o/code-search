@@ -1,0 +1,115 @@
+# What a developer might ask, and where the answer lives in CPython 3.12.8. A hit on any listed symbol counts.
+# Paraphrase queries deliberately avoid the identifier's own words. Dev and test are assigned by a hash of
+# the query text (see evals/run.py), so nobody picks which queries land in the test set.
+paraphrase:
+  - {q: undo percent encoding in a web address, a: [urllib.parse.unquote, urllib.parse.unquote_to_bytes]}
+  - {q: break a web address into scheme host and path, a: [urllib.parse.urlsplit, urllib.parse.urlparse]}
+  - {q: turn a dictionary into a form encoded string for a request, a: [urllib.parse.urlencode]}
+  - {q: combine a relative link with the page it appeared on, a: [urllib.parse.urljoin]}
+  - {q: decide whether a crawler is allowed to visit a page, a: [urllib.robotparser.RobotFileParser.can_fetch]}
+  - {q: follow a server's instruction to go to another location, a: [urllib.request.HTTPRedirectHandler.http_error_302, urllib.request.HTTPRedirectHandler.redirect_request]}
+  - {q: retry a request with username and password after a 401, a: [urllib.request.AbstractBasicAuthHandler.http_error_auth_reqed, urllib.request.AbstractBasicAuthHandler.retry_http_basic_auth, urllib.request.HTTPBasicAuthHandler.http_error_401]}
+  - {q: read a response body that arrives in length prefixed pieces, a: [http.client.HTTPResponse._read_chunked, http.client.HTTPResponse._readinto_chunked, http.client.HTTPResponse._read_next_chunk_size]}
+  - {q: serve files from the current folder over the web, a: [http.server.SimpleHTTPRequestHandler, http.server.SimpleHTTPRequestHandler.do_GET, http.server.SimpleHTTPRequestHandler.send_head]}
+  - {q: decide whether a stored browser token may be sent back to this site, a: [http.cookiejar.DefaultCookiePolicy.return_ok, http.cookiejar.DefaultCookiePolicy.return_ok_domain, http.cookiejar.DefaultCookiePolicy.domain_return_ok]}
+  - {q: start a new log file once the current one gets too big, a: [logging.handlers.RotatingFileHandler, logging.handlers.RotatingFileHandler.shouldRollover, logging.handlers.RotatingFileHandler.doRollover]}
+  - {q: start a new log file every night, a: [logging.handlers.TimedRotatingFileHandler, logging.handlers.TimedRotatingFileHandler.computeRollover, logging.handlers.TimedRotatingFileHandler.doRollover]}
+  - {q: pass log messages to a background thread so callers don't block, a: [logging.handlers.QueueHandler, logging.handlers.QueueListener]}
+  - {q: set up all logging from a settings mapping, a: [logging.config.dictConfig, logging.config.DictConfigurator, logging.config.DictConfigurator.configure]}
+  - {q: work out the severity threshold by looking at parent loggers, a: [logging.Logger.getEffectiveLevel]}
+  - {q: put a text value in quotes and escape special characters for a JavaScript object file, a: [json.encoder.py_encode_basestring, json.encoder.py_encode_basestring_ascii]}
+  - {q: decode one document from the middle of a longer string and report where it ended, a: [json.decoder.JSONDecoder.raw_decode]}
+  - {q: stop serializing when an object contains itself, a: [json.encoder._make_iterencode, json.encoder.JSONEncoder.iterencode]}
+  - {q: guess which character separates columns in a data file, a: [csv.Sniffer.sniff, csv.Sniffer._guess_delimiter, csv.Sniffer._guess_quote_and_delimiter]}
+  - {q: write rows from mappings keyed by column name, a: [csv.DictWriter, csv.DictWriter.writerow, csv.DictWriter._dict_to_list]}
+  - {q: duplicate a whole folder including everything under it, a: [shutil.copytree, shutil._copytree]}
+  - {q: delete a folder and everything inside it, a: [shutil.rmtree, shutil._rmtree_safe_fd, shutil._rmtree_unsafe]}
+  - {q: locate a program by searching the directories on the system path, a: [shutil.which]}
+  - {q: pack a folder into a compressed bundle, a: [shutil.make_archive, shutil._make_tarball, shutil._make_zipfile]}
+  - {q: stop a malicious archive from writing outside the destination folder, a: [tarfile._get_filtered_attrs, tarfile.data_filter, tarfile.tar_filter]}
+  - {q: read the table of contents at the end of a compressed archive, a: [zipfile.ZipFile._RealGetContents, zipfile._EndRecData]}
+  - {q: scratch folder that cleans itself up when you are done, a: [tempfile.TemporaryDirectory]}
+  - {q: generate unpredictable names for scratch files, a: [tempfile._RandomNameSequence, tempfile._get_candidate_names]}
+  - {q: run an external program and collect what it printed, a: [subprocess.run, subprocess.check_output, subprocess.getoutput, subprocess.getstatusoutput]}
+  - {q: make a string safe to paste into a terminal command, a: [shlex.quote]}
+  - {q: split a command line the way a terminal would, a: [shlex.split, shlex.shlex]}
+  - {q: reflow a paragraph so no line is longer than a given width, a: [textwrap.TextWrapper.wrap, textwrap.TextWrapper._wrap_chunks, textwrap.wrap, textwrap.fill]}
+  - {q: remove the indentation shared by every line, a: [textwrap.dedent]}
+  - {q: find the biggest run of elements two lists have in common, a: [difflib.SequenceMatcher.find_longest_match]}
+  - {q: show what changed between two versions of a file in patch format, a: [difflib.unified_diff]}
+  - {q: suggest the nearest correctly spelled word, a: [difflib.get_close_matches]}
+  - {q: remember results of expensive calls and throw away the oldest ones, a: [functools.lru_cache, functools._lru_cache_wrapper]}
+  - {q: choose which implementation to call based on the type of the first argument, a: [functools.singledispatch, functools._find_impl, functools._compose_mro, functools._c3_mro]}
+  - {q: fix some arguments of a callable now and supply the rest later, a: [functools.partial, functools.partialmethod]}
+  - {q: the items that occur most frequently, a: [collections.Counter.most_common]}
+  - {q: build a lightweight record type whose fields have names, a: [collections.namedtuple]}
+  - {q: combine several already ordered streams without loading them all, a: [heapq.merge]}
+  - {q: the top few biggest values of a large sequence, a: [heapq.nlargest]}
+  - {q: add an element to an ordered list so that it stays ordered, a: [bisect.insort_right, bisect.insort_left]}
+  - {q: write the constructor automatically from annotated class attributes, a: [dataclasses._init_fn, dataclasses._process_class]}
+  - {q: turn a record instance and anything nested inside it into plain dictionaries, a: [dataclasses.asdict, dataclasses._asdict_inner]}
+  - {q: substitute references to other settings inside a config value, a: [configparser.BasicInterpolation._interpolate_some, configparser.BasicInterpolation.before_get, configparser.ExtendedInterpolation._interpolate_some]}
+  - {q: read section headers and key value lines from a settings file, a: [configparser.RawConfigParser._read]}
+  - {q: merge neighbouring subnets into the fewest possible blocks, a: [ipaddress.collapse_addresses, ipaddress._collapse_addresses_internal]}
+  - {q: random token that is safe to put in a link, a: [secrets.token_urlsafe]}
+  - {q: identifier derived deterministically from a namespace and a name, a: [uuid.uuid3, uuid.uuid5]}
+  - {q: read a timestamp in the international standard text format, a: [_pydatetime.datetime.fromisoformat, _pydatetime.date.fromisoformat, _pydatetime._parse_isoformat_date, _pydatetime._parse_isoformat_time]}
+  - {q: does this year have a February 29th, a: [calendar.isleap]}
+  - {q: convert a shell wildcard into a regular expression, a: [fnmatch.translate]}
+  - {q: match file names across any depth of nested folders, a: [glob._rlistdir, glob._glob2, glob._iglob, glob.iglob]}
+  - {q: turn entity references such as ampersand codes back into characters, a: [html.unescape, html._replace_charref]}
+  - {q: run through markup and call a callback for each start tag, a: [html.parser.HTMLParser.goahead, html.parser.HTMLParser.parse_starttag]}
+  - {q: add line breaks and spaces so a document tree is readable, a: [xml.etree.ElementTree.indent]}
+  - {q: print an exception together with the one that caused it, a: [traceback.TracebackException.format, traceback.TracebackException, traceback.format_exception, traceback.print_exception]}
+  - {q: find every test module under a folder, a: [unittest.loader.TestLoader.discover, unittest.loader.TestLoader._find_tests]}
+  - {q: temporarily swap an object for a fake during a test, a: [unittest.mock.patch, unittest.mock._patch, unittest.mock._patch.__enter__]}
+  - {q: fail a test and show the difference between two mappings, a: [unittest.case.TestCase.assertDictEqual]}
+  - {q: the middle value of a data set, a: [statistics.median]}
+  - {q: draw several items where some are likelier than others, a: [random.Random.choices]}
+  - {q: put a list in random order in place, a: [random.Random.shuffle]}
+  - {q: copy an object and everything it refers to even when it refers to itself, a: [copy.deepcopy]}
+  - {q: restrict which classes may be created while restoring saved objects, a: [pickle._Unpickler.find_class]}
+  - {q: work out the content type from a file's extension, a: [mimetypes.MimeTypes.guess_type, mimetypes.guess_type]}
+  - {q: send a mail message through an outgoing server, a: [smtplib.SMTP.send_message, smtplib.SMTP.sendmail]}
+  - {q: switch an existing plaintext mail connection to an encrypted one, a: [smtplib.SMTP.starttls, imaplib.IMAP4.starttls]}
+  - {q: serve each client connection on its own thread, a: [socketserver.ThreadingMixIn, socketserver.ThreadingMixIn.process_request, socketserver.ThreadingMixIn.process_request_thread]}
+  - {q: wait until any of many sockets is ready, a: [selectors.SelectSelector.select, selectors._PollLikeSelector.select, selectors.BaseSelector.select]}
+  - {q: connect to a host trying each of its addresses until one works, a: [socket.create_connection]}
+  - {q: start connection attempts with a small delay and keep the first to succeed, a: [asyncio.staggered.staggered_race, asyncio.base_events.BaseEventLoop.create_connection]}
+  - {q: allow only a limited number of coroutines into a section at once, a: [asyncio.locks.Semaphore, asyncio.locks.Semaphore.acquire]}
+  - {q: cancel an awaitable that takes too long, a: [asyncio.tasks.wait_for, asyncio.timeouts.Timeout, asyncio.timeouts.timeout]}
+  - {q: run several awaitables at the same time and collect all the results, a: [asyncio.tasks.gather]}
+  - {q: call a blocking function from a coroutine without freezing the loop, a: [asyncio.threads.to_thread, asyncio.base_events.BaseEventLoop.run_in_executor]}
+  - {q: add another worker when a job is queued and none are idle, a: [concurrent.futures.thread.ThreadPoolExecutor._adjust_thread_count]}
+  - {q: yield background jobs in the order they complete, a: [concurrent.futures._base.as_completed]}
+  - {q: make threads wait until a fixed number of them arrive, a: [threading.Barrier, threading.Barrier.wait]}
+  - {q: call a function once after a delay on a separate thread, a: [threading.Timer]}
+  - {q: release a lock and sleep until another thread signals, a: [threading.Condition.wait]}
+  - {q: format nested data so that it is readable by a person, a: [pprint.PrettyPrinter.pformat, pprint.pformat]}
+  - {q: a command line tool with several sub commands, a: [argparse.ArgumentParser.add_subparsers, argparse._SubParsersAction]}
+  - {q: command line flags that cannot be used together, a: [argparse._MutuallyExclusiveGroup, argparse._ActionsContainer.add_mutually_exclusive_group]}
+  - {q: generate the summary line describing how to call a program, a: [argparse.HelpFormatter._format_usage]}
+  - {q: decode a mail subject line written in a foreign character set, a: [email.header.decode_header]}
+  - {q: add a file to an outgoing mail message, a: [email.message.MIMEPart.add_attachment]}
+  - {q: format the current time the way mail headers need it, a: [email.utils.formatdate, email.utils.format_datetime]}
+identifier:
+  - {q: TimedRotatingFileHandler, a: [logging.handlers.TimedRotatingFileHandler]}
+  - {q: find_longest_match, a: [difflib.SequenceMatcher.find_longest_match]}
+  - {q: _RealGetContents, a: [zipfile.ZipFile._RealGetContents]}
+  - {q: raw_decode, a: [json.decoder.JSONDecoder.raw_decode]}
+  - {q: getEffectiveLevel, a: [logging.Logger.getEffectiveLevel]}
+  - {q: urlsplit, a: [urllib.parse.urlsplit]}
+  - {q: effective level logger, a: [logging.Logger.getEffectiveLevel]}
+  - {q: copytree, a: [shutil.copytree, shutil._copytree]}
+  - {q: as_completed, a: [concurrent.futures._base.as_completed]}
+  - {q: ThreadPoolExecutor adjust thread count, a: [concurrent.futures.thread.ThreadPoolExecutor._adjust_thread_count]}
+  - {q: unified_diff, a: [difflib.unified_diff]}
+  - {q: make_archive, a: [shutil.make_archive]}
+  - {q: DictWriter, a: [csv.DictWriter]}
+  - {q: staggered_race, a: [asyncio.staggered.staggered_race]}
+  - {q: collapse_addresses, a: [ipaddress.collapse_addresses]}
+  - {q: robot parser can_fetch, a: [urllib.robotparser.RobotFileParser.can_fetch]}
+  - {q: add_subparsers, a: [argparse.ArgumentParser.add_subparsers]}
+  - {q: get_close_matches, a: [difflib.get_close_matches]}
+  - {q: lru_cache wrapper, a: [functools._lru_cache_wrapper, functools.lru_cache]}
+  - {q: DefaultCookiePolicy return_ok, a: [http.cookiejar.DefaultCookiePolicy.return_ok]}

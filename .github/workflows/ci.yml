@@ -1,0 +1,37 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - run: python -m pytest tests -q
+
+  eval-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - uses: actions/cache@v4
+        with:
+          path: .cache
+          key: corpus-and-model-${{ hashFiles('codesearch/embed.py', 'evals/run.py') }}
+      - run: python -m evals.run --split test --gate --report test-report.md
+      - run: cat test-report.md >> "$GITHUB_STEP_SUMMARY"
+        if: always()
